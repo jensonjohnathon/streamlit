@@ -37,6 +37,32 @@ st.write(
     """
 )
 
+option = st.selectbox(
+    "How would you like to be contacted?",
+    ("Email", "Home phone", "Mobile phone"),
+    index=None,
+    placeholder="Select *contact* method...",
+)
+
+txt = st.text_area(
+    "Text to analyze",
+    placeholder="Enter some *text* to analyze...",
+)
+
+title = st.text_input("Movie title", placeholder="Enter a **movie** title")
+
+options = st.multiselect(
+    "What are your favorite colors?",
+    options=["Green", "Yellow", "Red", "Blue", "Black", "White"],
+    placeholder="Select *colors*...",
+)
+
+prompt = st.chat_input(placeholder="Type a *message* and press enter...")
+if prompt:
+    st.write(f"User has sent the following prompt: {prompt}")
+
+number = st.number_input("Insert a number", placeholder="Insert a *number* here...")
+
 # Preload Python modules that take a while to compile in a new venv.
 # Otherwise, when users switch to another page, it seems that Streamlit
 # is slow, when in reality this is just an artifact of loading/compiling
