@@ -31,6 +31,7 @@ import { type OnChangeParams, Select as UISelect } from "baseui/select"
 import IsSidebarContext from "~lib/components/core/IsSidebarContext"
 import { getBorderColor } from "~lib/components/shared/Base/styled-components"
 import VirtualDropdown from "~lib/components/shared/Dropdown/VirtualDropdown"
+import StreamlitMarkdown from "~lib/components/shared/StreamlitMarkdown"
 import { Placement } from "~lib/components/shared/Tooltip"
 import TooltipIcon from "~lib/components/shared/TooltipIcon"
 import {
@@ -215,6 +216,13 @@ const Selectbox: FC<Props> = ({
             }),
           },
           Placeholder: {
+            component: ({ children }) => (
+              <StreamlitMarkdown
+                source={children}
+                allowHTML={false}
+                inheritFont
+              />
+            ),
             style: () => ({
               color: selectDisabled
                 ? theme.colors.fadedText40
