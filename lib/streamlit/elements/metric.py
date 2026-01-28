@@ -43,6 +43,7 @@ if TYPE_CHECKING:
 
 Value: TypeAlias = AnyNumber | str | None
 Delta: TypeAlias = AnyNumber | str | None
+DeltaCaption: TypeAlias = AnyNumber | str | None
 DeltaColor: TypeAlias = Literal[
     "normal",
     "inverse",
@@ -94,6 +95,7 @@ class MetricMixin:
         label: str,
         value: Value,
         delta: Delta = None,
+        deltacaption: DeltaCaption = None,
         delta_color: DeltaColor = "normal",
         *,
         help: str | None = None,
@@ -405,6 +407,18 @@ class MetricMixin:
         if format is not None:
             metric_proto.format = format
 
+        if deltacaption is not None:
+            if not isinstance(deltacaption, str):
+                raise StreamlitAPIException(
+                    "`deltacaption` must be a string, "
+                    f"but got value of type {type(deltacaption)}."
+                )
+            if delta in {None, ""}:
+                raise StreamlitAPIException(
+                    "`deltacaption` can only be set when `delta` is provided."
+                )
+            metric_proto.deltacaption = dedent(deltacaption)
+
         validate_height(height, allow_content=True)
         validate_width(width, allow_content=True)
         layout_config = LayoutConfig(width=width, height=height)
@@ -456,6 +470,14 @@ def _parse_delta(delta: Delta) -> str:
     if isinstance(delta, str):
         return dedent(delta)
     return from_number(delta)
+
+
+def _parse_deltacaption(deltacaption: DeltaCaption) -> str:
+    if deltacaption is None or deltacaption == "":
+        return ""
+    if isinstance(deltacaption, str):
+        return dedent(deltacaption)
+    return from_number(deltacaption)
 
 
 def _determine_delta_color_and_direction(

@@ -266,6 +266,7 @@ function Metric({ element }: Readonly<MetricProps>): ReactElement {
     body: metricValue,
     label,
     delta,
+    deltacaption,
     direction,
     color,
     labelVisibility,
@@ -286,6 +287,11 @@ function Metric({ element }: Readonly<MetricProps>): ReactElement {
     format && delta && isNumericString(delta)
       ? safeFormatNumber(delta, format)
       : delta
+
+  const formattedDeltaCaption =
+    format && deltacaption && isNumericString(deltacaption)
+      ? safeFormatNumber(deltacaption, format)
+      : deltacaption
 
   let metricDirection: EmotionIcon | null = null
 
@@ -370,32 +376,38 @@ function Metric({ element }: Readonly<MetricProps>): ReactElement {
           </StyledTruncateText>
         </StyledMetricValueText>
         {deltaExists && (
-          <StyledMetricDeltaText
-            data-testid="stMetricDelta"
-            metricColor={color}
-            showArrow={metricDirection !== null}
-          >
-            {metricDirection && (
-              <Icon
-                testid={
-                  metricDirection === ArrowUpward
-                    ? "stMetricDeltaIcon-Up"
-                    : "stMetricDeltaIcon-Down"
-                }
-                content={metricDirection}
-                size="md"
-                margin={arrowMargin}
-              />
-            )}
-            <StyledTruncateText>
-              <StreamlitMarkdown
-                source={formattedDelta}
-                allowHTML={false}
-                isLabel // Treat the metric delta with the label limitations.
-                inheritFont
-              />
-            </StyledTruncateText>
-          </StyledMetricDeltaText>
+          <>
+            <StyledMetricDeltaText
+              data-testid="stMetricDelta"
+              metricColor={color}
+              showArrow={metricDirection !== null}
+            >
+              {metricDirection && (
+                <Icon
+                  testid={
+                    metricDirection === ArrowUpward
+                      ? "stMetricDeltaIcon-Up"
+                      : "stMetricDeltaIcon-Down"
+                  }
+                  content={metricDirection}
+                  size="md"
+                  margin={arrowMargin}
+                />
+              )}
+              <StyledTruncateText>
+                <StreamlitMarkdown
+                  source={formattedDelta}
+                  allowHTML={false}
+                  isLabel // Treat the metric delta with the label limitations.
+                  inheritFont
+                />
+              </StyledTruncateText>
+            </StyledMetricDeltaText>
+            <StreamlitMarkdown
+              source={formattedDeltaCaption}
+              allowHTML={false}
+            />
+          </>
         )}
       </StyledMetricContent>
       {chartData && chartData.length > 0 && (

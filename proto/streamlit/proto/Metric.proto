@@ -25,13 +25,14 @@ message Metric {
   string label = 1;
   string body = 2;
   string delta = 3;
+  string deltacaption = 4;
 
   enum MetricDirection {
     DOWN = 0;
     UP = 1;
     NONE = 2;
   }
-  MetricDirection direction = 4;
+  MetricDirection direction = 5;
 
   enum MetricColor {
     RED = 0;
@@ -43,19 +44,19 @@ message Metric {
     VIOLET = 6;
     PRIMARY = 7;
   }
-  MetricColor color = 5;
-  string help = 6;
-  LabelVisibilityMessage label_visibility = 7;
-  bool show_border = 8;
-  repeated double chart_data = 9;
+  MetricColor color = 6;
+  string help = 7;
+  LabelVisibilityMessage label_visibility = 8;
+  bool show_border = 9;
+  repeated double chart_data = 10;
 
   enum ChartType {
     LINE = 0;
     BAR = 1;
     AREA = 2;
   }
-  ChartType chart_type = 10;
+  ChartType chart_type = 11;
 
   // Format string for the value and delta (applied only if they are numeric).
-  string format = 11;
+  string format = 12;
 }
